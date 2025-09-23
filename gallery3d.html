@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OUR Album</title>
+
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa6b2;
+      --accent:#6ee7b7;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background: linear-gradient(180deg,#071126 0%, #07162a 60%);
+      color: #e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      gap:20px;
+      font-size:15px;
+      line-height:1.35;
+    }
+
+    .container{
+      width:100%;
+      max-width:1000px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      padding:22px;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .header{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .avatar{
+      width:92px;
+      height:92px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),#4dd0e1);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#022;
+      font-size:28px;
+      flex-shrink:0;
+      box-shadow:0 6px 18px rgba(0,0,0,0.5), inset 0 -6px 20px rgba(255,255,255,0.03);
+    }
+
+    .person-info{
+      flex:1;
+      min-width:0;
+    }
+
+    h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.2px;
+    }
+
+    .meta{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .cert{
+      display:inline-block;
+      margin-top:8px;
+      background:var(--glass);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:600;
+      color:var(--accent);
+      border:1px solid rgba(110,231,183,0.12);
+      font-size:13px;
+    }
+
+    .album-title{
+      margin-top:16px;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .album-title h2{
+      margin:0;
+      font-size:16px;
+      color:#dff6ef;
+    }
+
+    .album-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
+      gap:12px;
+    }
+
+    .thumb{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      cursor:pointer;
+      transition: transform .14s ease, box-shadow .14s ease;
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+    }
+
+    .thumb:hover{
+      transform:translateY(-6px);
+      box-shadow:0 18px 30px rgba(3,6,23,0.6);
+    }
+
+    .thumb img{
+      display:block;
+      width:100%;
+      height:110px;
+      object-fit:cover;
+    }
+
+    .caption{
+      padding:10px;
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+
+    .caption .name{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      color:#dfeff6;
+      font-weight:600;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(3,6,14,0.7);
+      z-index:1200;
+      padding:18px;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease;
+    }
+    .modal.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .modal-inner{
+      max-width:980px;
+      width:100%;
+      border-radius:14px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(12,18,28,0.96), rgba(8,12,20,0.96));
+      box-shadow:0 30px 60px rgba(0,0,0,0.6);
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:10px;
+    }
+
+    .modal-img{
+      background:#031018;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:320px;
+    }
+    .modal-img img{
+      max-width:100%;
+      max-height:80vh;
+      object-fit:contain;
+      display:block;
+    }
+
+    .modal-side{
+      padding:14px;
+      color:var(--muted);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:0;
+    }
+
+    .close-btn{
+      margin-left:auto;
+      background:transparent;
+      border:none;
+      color:var(--muted);
+      font-size:20px;
+      cursor:pointer;
+    }
+
+    .controls{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .btn{
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    .small{
+      font-size:13px;
+      color:#cfeee0;
+    }
+
+    #uploadInput {
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: none;
+      background: var(--accent);
+      color: #022;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
+      margin-bottom:12px;
+    }
+
+    @media (max-width:780px){
+      .modal-inner{ grid-template-columns: 1fr; }
+      .modal-side{ order:2; }
+      .avatar{ width:68px; height:68px; font-size:20px }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="title">
+    <div class="header" id="title">
+      <div class="avatar" id="avatar">JR</div>
+      <div class="person-info">
+        <h1 id="personName">jaivy roy</h1>
+        <div class="meta" id="personId"> we are  —</div>
+        <div class="cert" id="personCert">love life </div>
+      </div>
+    </div>
+
+    <div class="album-title">
+      <h2>Album</h2>
+      <div class="small" id="count">0 items</div>
+      <button class="btn" id="resetBtn">Reset Album</button>
+    </div>
+
+    <input type="file" id="uploadInput" multiple accept="image/*">
+
+    <div class="album-grid" id="albumGrid" aria-live="polite"></div>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-inner" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-img">
+        <img id="modalImage" alt="Album image" src="">
+      </div>
+      <div class="modal-side">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="modalTitle" style="font-weight:700;color:#e9f9ef"></div>
+          <button class="close-btn" id="closeModal" title="Close">&times;</button>
+        </div>
+        <div id="modalMeta" style="font-size:13px;color:var(--muted)"></div>
+        <div class="controls" style="margin-top:auto">
+          <button class="btn" id="prevBtn">Prev</button>
+          <button class="btn" id="nextBtn">Next</button>
+          <button class="btn" id="downloadBtn">Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+ const defaultImages = [{ name: "Image 4", url: "image/IMG-20250514-WA0004.jpg" },
+{ name: "Image 5", url: "image/IMG-20250514-WA0005.jpg" },
+{ name: "Image 6", url: "image/IMG-20250514-WA0006.jpg" },
+{ name: "Image 7", url: "image/IMG-20250514-WA0007.jpg" },
+{ name: "Image 8", url: "image/IMG-20250514-WA0008.jpg" },
+{ name: "Image 9", url: "image/IMG-20250514-WA0009.jpg" },
+{ name: "Image 10", url: "image/IMG-20250514-WA0010.jpg" },
+{ name: "Image 11", url: "image/IMG-20250514-WA0011.jpg" },
+{ name: "Image 12", url: "image/IMG-20250514-WA0012.jpg" },
+{ name: "Image 13", url: "image/IMG-20250514-WA0013.jpg" },
+{ name: "Image 14", url: "image/IMG-20250514-WA0014.jpg" },
+{ name: "Image 16", url: "image/IMG-20250521-WA0016.jpg" },
+{ name: "Image 17", url: "image/IMG-20250521-WA0017.jpg" },
+{ name: "Image 18", url: "image/IMG-20250521-WA0018.jpg" },
+{ name: "Image 19", url: "image/IMG-20250521-WA0019.jpg" },
+{ name: "Image 20", url: "image/IMG-20250521-WA0020.jpg" },
+{ name: "Image 21", url: "image/IMG-20250521-WA0021.jpg" },
+{ name: "Image 22", url: "image/IMG-20250521-WA0022.jpg" },
+{ name: "Image 23", url: "image/IMG-20250521-WA0023.jpg" },
+{ name: "Image 24", url: "image/IMG-20250521-WA0024.jpg" },
+{ name: "Image 25", url: "image/IMG-20250521-WA0025.jpg" },
+{ name: "Image 26", url: "image/IMG-20250521-WA0026.jpg" },
+{ name: "Image 27", url: "image/IMG-20250521-WA0027.jpg" },
+{ name: "Image 28", url: "image/IMG-20250521-WA0028.jpg" },
+{ name: "Image 29", url: "image/IMG-20250521-WA0029.jpg" },
+{ name: "Image 30", url: "image/IMG-20250521-WA0030.jpg" },
+{ name: "Image 31", url: "image/IMG-20250521-WA0031.jpg" },
+{ name: "Image 32", url: "image/IMG-20250521-WA0032.jpg" },
+{ name: "Image 33", url: "image/IMG-20250521-WA0033.jpg" },
+{ name: "Image 34", url: "image/IMG-20250521-WA0034.jpg" },
+{ name: "Image 35", url: "image/IMG-20250521-WA0035.jpg" },
+{ name: "Image 36", url: "image/IMG-20250521-WA0036.jpg" },
+{ name: "Image 37", url: "image/IMG-20250521-WA0037.jpg" },
+{ name: "Image 38", url: "image/IMG-20250521-WA0038.jpg" },
+{ name: "Image 39", url: "image/IMG-20250521-WA0039.jpg" },
+{ name: "Image 40", url: "image/IMG-20250521-WA0040.jpg" },
+{ name: "Image 41", url: "image/IMG-20250521-WA0041.jpg" },
+{ name: "Image 42", url: "image/IMG-20250521-WA0042.jpg" },
+{ name: "Image 43", url: "image/IMG-20250521-WA0043.jpg" },
+{ name: "Image 44", url: "image/IMG-20250521-WA0044.jpg" },
+{ name: "Image 45", url: "image/IMG-20250521-WA0045.jpg" },
+{ name: "Image 46", url: "image/IMG-20250521-WA0046.jpg" },
+{ name: "Image 47", url: "image/IMG-20250521-WA0047.jpg" },
+{ name: "Image 48", url: "image/IMG-20250521-WA0048.jpg" },
+{ name: "Image 49", url: "image/IMG-20250521-WA0049.jpg" },
+{ name: "Image 50", url: "image/IMG-20250521-WA0050.jpg" },
+{ name: "Image 51", url: "image/IMG-20250521-WA0051.jpg" },
+{ name: "Image 52", url: "image/IMG-20250521-WA0052.jpg" },
+{ name: "Image 53", url: "image/IMG-20250521-WA0053.jpg" },
+{ name: "Image 54", url: "image/IMG-20250521-WA0054.jpg" },
+{ name: "Image 55", url: "image/IMG-20250521-WA0055.jpg" },
+{ name: "Image 37", url: "image/IMG-20250923-WA0037.jpg" },
+{ name: "Image 38", url: "image/IMG-20250923-WA0038.jpg" },
+{ name: "Image 39", url: "image/IMG-20250923-WA0039.jpg" },
+{ name: "Image 40", url: "image/IMG-20250923-WA0040.jpg" },
+{ name: "Image 41", url: "image/IMG-20250923-WA0041.jpg" },
+{ name: "Image 42", url: "image/IMG-20250923-WA0042.jpg" },
+{ name: "Image 43", url: "image/IMG-20250923-WA0043.jpg" },
+{ name: "Image 44", url: "image/IMG-20250923-WA0044.jpg" },
+{ name: "Image 45", url: "image/IMG-20250923-WA0045.jpg" },
+{ name: "Image 46", url: "image/IMG-20250923-WA0046.jpg" },
+{ name: "Image 47", url: "image/IMG-20250923-WA0047.jpg" },
+{ name: "Image 48", url: "image/IMG-20250923-WA0048.jpg" },
+{ name: "Image 49", url: "image/IMG-20250923-WA0049.jpg" },
+{ name: "Image 50", url: "image/IMG-20250923-WA0050.jpg" },
+{ name: "Image 51", url: "image/IMG-20250923-WA0051.jpg" },
+{ name: "Image 52", url: "image/IMG-20250923-WA0052.jpg" },
+{ name: "Image 53", url: "image/IMG-20250923-WA0053.jpg" },
+{ name: "Image 54", url: "image/IMG-20250923-WA0054.jpg" },
+{ name: "Image 55", url: "image/IMG-20250923-WA0055.jpg" },
+{ name: "Image 56", url: "image/IMG-20250923-WA0056.jpg" },
+{ name: "Image 57", url: "image/IMG-20250923-WA0057.jpg" },
+{ name: "Image 58", url: "image/IMG-20250923-WA0058.jpg" },
+{ name: "Image 59", url: "image/IMG-20250923-WA0059.jpg" },
+{ name: "Image 60", url: "image/IMG-20250923-WA0060.jpg" },
+{ name: "Image 61", url: "image/IMG-20250923-WA0061.jpg" },
+{ name: "Image 62", url: "image/IMG-20250923-WA0062.jpg" },
+{ name: "Image 63", url: "image/IMG-20250923-WA0063.jpg" },
+{ name: "Image 64", url: "image/IMG-20250923-WA0064.jpg" },
+{ name: "Image 65", url: "image/IMG-20250923-WA0065.jpg" },
+{ name: "Image 66", url: "image/IMG-20250923-WA0066.jpg" },
+{ name: "Image 67", url: "image/IMG-20250923-WA0067.jpg" },
+{ name: "Image 68", url: "image/IMG-20250923-WA0068.jpg" },
+{ name: "Image 69", url: "image/IMG-20250923-WA0069.jpg" },
+{ name: "Image 70", url: "image/IMG-20250923-WA0070.jpg" },
+{ name: "Image 71", url: "image/IMG-20250923-WA0071.jpg" },
+{ name: "Image 72", url: "image/IMG-20250923-WA0072.jpg" },
+{ name: "Image 73", url: "image/IMG-20250923-WA0073.jpg" },
+{ name: "Image 74", url: "image/IMG-20250923-WA0074.jpg" },
+{ name: "Image 75", url: "image/IMG-20250923-WA0075.jpg" },
+{ name: "Image 76", url: "image/IMG-20250923-WA0076.jpg" },
+{ name: "Image 77", url: "image/IMG-20250923-WA0077.jpg" },
+{ name: "Image 78", url: "image/IMG-20250923-WA0078.jpg" },
+{ name: "Image 79", url: "image/IMG-20250923-WA0079.jpg" },
+{ name: "Image 80", url: "image/IMG-20250923-WA0080.jpg" },
+{ name: "Image 81", url: "image/IMG-20250923-WA0081.jpg" },
+{ name: "Image 82", url: "image/IMG-20250923-WA0082.jpg" },
+{ name: "Image 83", url: "image/IMG-20250923-WA0083.jpg" },
+{ name: "Image 84", url: "image/IMG-20250923-WA0084.jpg" },
+{ name: "Image 85", url: "image/IMG-20250923-WA0085.jpg" },
+{ name: "Image 86", url: "image/IMG-20250923-WA0086.jpg" },
+{ name: "Image 87", url: "image/IMG-20250923-WA0087.jpg" },
+{ name: "Image 88", url: "image/IMG-20250923-WA0088.jpg" },
+{ name: "Image 89", url: "image/IMG-20250923-WA0089.jpg" },
+{ name: "Image 90", url: "image/IMG-20250923-WA0090.jpg" },
+{ name: "Image 91", url: "image/IMG-20250923-WA0091.jpg" },
+{ name: "Image 92", url: "image/IMG-20250923-WA0092.jpg" },
+{ name: "Image 93", url: "image/IMG-20250923-WA0093.jpg" },
+{ name: "Image 94", url: "image/IMG-20250923-WA0094.jpg" },
+{ name: "Image 95", url: "image/IMG-20250923-WA0095.jpg" },
+{ name: "Image 96", url: "image/IMG-20250923-WA0096.jpg" },
+{ name: "Image 97", url: "image/IMG-20250923-WA0097.jpg" },
+{ name: "Image 98", url: "image/IMG-20250923-WA0098.jpg" },
+{ name: "Image 99", url: "image/IMG-20250923-WA0099.jpg" },
+{ name: "Image 100", url: "image/IMG-20250923-WA0100.jpg" },
+{ name: "Image 101", url: "image/IMG-20250923-WA0101.jpg" },
+{ name: "Image 102", url: "image/IMG-20250923-WA0102.jpg" },
+{ name: "Image 103", url: "image/IMG-20250923-WA0103.jpg" },
+{ name: "Image 104", url: "image/IMG-20250923-WA0104.jpg" },
+{ name: "Image 105", url: "image/IMG-20250923-WA0105.jpg" },
+{ name: "Image 106", url: "image/IMG-20250923-WA0106.jpg" },
+{ name: "Image 107", url: "image/IMG-20250923-WA0107.jpg" },
+{ name: "Image 108", url: "image/IMG-20250923-WA0108.jpg" },
+{ name: "Image 109", url: "image/IMG-20250923-WA0109.jpg" },
+{ name: "Image 110", url: "image/IMG-20250923-WA0110.jpg" },
+{ name: "Image 111", url: "image/IMG-20250923-WA0111.jpg" },
+{ name: "Image 112", url: "image/IMG-20250923-WA0112.jpg" },
+{ name: "Image 113", url: "image/IMG-20250923-WA0113.jpg" },
+{ name: "Image 114", url: "image/IMG-20250923-WA0114.jpg" },
+{ name: "Image 115", url: "image/IMG-20250923-WA0115.jpg" },
+{ name: "Image 116", url: "image/IMG-20250923-WA0116.jpg" },
+{ name: "Image 117", url: "image/IMG-20250923-WA0117.jpg" },
+{ name: "Image 118", url: "image/IMG-20250923-WA0118.jpg" },
+{ name: "Image 119", url: "image/IMG-20250923-WA0119.jpg" },
+{ name: "Image 120", url: "image/IMG-20250923-WA0120.jpg" },
+{ name: "Image 121", url: "image/IMG-20250923-WA0121.jpg" },
+{ name: "Image 122", url: "image/IMG-20250923-WA0122.jpg" },
+{ name: "Image 123", url: "image/IMG-20250923-WA0123.jpg" },
+{ name: "Image 124", url: "image/IMG-20250923-WA0124.jpg" },
+{ name: "Image 125", url: "image/IMG-20250923-WA0125.jpg" },
+{ name: "Image 126", url: "image/IMG-20250923-WA0126.jpg" },
+{ name: "Image 127", url: "image/IMG-20250923-WA0127.jpg" },
+{ name: "Image 128", url: "image/IMG-20250923-WA0128.jpg" },
+{ name: "Image 129", url: "image/IMG-20250923-WA0129.jpg" },
+{ name: "Image 130", url: "image/IMG-20250923-WA0130.jpg" },
+{ name: "Image 131", url: "image/IMG-20250923-WA0131.jpg" },
+{ name: "Image 132", url: "image/IMG-20250923-WA0132.jpg" },
+{ name: "Image 133", url: "image/IMG-20250923-WA0133.jpg" },
+{ name: "Image 134", url: "image/IMG-20250923-WA0134.jpg" },
+{ name: "Image 135", url: "image/IMG-20250923-WA0135.jpg" },
+{ name: "Image 136", url: "image/IMG-20250923-WA0136.jpg" },
+{ name: "Image 137", url: "image/IMG-20250923-WA0137.jpg" },
+{ name: "Image 138", url: "image/IMG-20250923-WA0138.jpg" },
+{ name: "Image 139", url: "image/IMG-20250923-WA0139.jpg" },
+{ name: "Image 140", url: "image/IMG-20250923-WA0140.jpg" },
+{ name: "Image 141", url: "image/IMG-20250923-WA0141.jpg" },
+{ name: "Image 142", url: "image/IMG-20250923-WA0142.jpg" },
+{ name: "Image 143", url: "image/IMG-20250923-WA0143.jpg" },
+{ name: "Image 144", url: "image/IMG-20250923-WA0144.jpg" },
+{ name: "Image 145", url: "image/IMG-20250923-WA0145.jpg" },
+{ name: "Image 146", url: "image/IMG-20250923-WA0146.jpg" },
+{ name: "Image 147", url: "image/IMG-20250923-WA0147.jpg" },
+{ name: "Image 148", url: "image/IMG-20250923-WA0148.jpg" },
+{ name: "Image 149", url: "image/IMG-20250923-WA0149.jpg" },
+{ name: "Image 150", url: "image/IMG-20250923-WA0150.jpg" },
+{ name: "Image 151", url: "image/IMG-20250923-WA0151.jpg" },
+{ name: "Image 152", url: "image/IMG-20250923-WA0152.jpg" },
+{ name: "Image 153", url: "image/IMG-20250923-WA0153.jpg" },
+{ name: "Image 154", url: "image/IMG-20250923-WA0154.jpg" },
+{ name: "Image 155", url: "image/IMG-20250923-WA0155.jpg" },
+{ name: "Image 156", url: "image/IMG-20250923-WA0156.jpg" },
+{ name: "Image 157", url: "image/IMG-20250923-WA0157.jpg" },
+{ name: "Image 158", url: "image/IMG-20250923-WA0158.jpg" },
+{ name: "Image 159", url: "image/IMG-20250923-WA0159.jpg" },
+{ name: "Image 160", url: "image/IMG-20250923-WA0160.jpg" },
+{ name: "Image 161", url: "image/IMG-20250923-WA0161.jpg" },
+{ name: "Image 162", url: "image/IMG-20250923-WA0162.jpg" },
+{ name: "Image 163", url: "image/IMG-20250923-WA0163.jpg" },
+{ name: "Image 164", url: "image/IMG-20250923-WA0164.jpg" },
+{ name: "Image 165", url: "image/IMG-20250923-WA0165.jpg" },
+{ name: "Image 166", url: "image/IMG-20250923-WA0166.jpg" },
+{ name: "Image 167", url: "image/IMG-20250923-WA0167.jpg" },
+{ name: "Image 168", url: "image/IMG-20250923-WA0168.jpg" },
+{ name: "Image 169", url: "image/IMG-20250923-WA0169.jpg" },
+{ name: "Image 170", url: "image/IMG-20250923-WA0170.jpg" },
+{ name: "Image 171", url: "image/IMG-20250923-WA0171.jpg" },
+{ name: "Image 172", url: "image/IMG-20250923-WA0172.jpg" },
+{ name: "Image 173", url: "image/IMG-20250923-WA0173.jpg" },
+{ name: "Image 174", url: "image/IMG-20250923-WA0174.jpg" },
+{ name: "Image 175", url: "image/IMG-20250923-WA0175.jpg" },
+{ name: "Image 176", url: "image/IMG-20250923-WA0176.jpg" },
+{ name: "Image 177", url: "image/IMG-20250923-WA0177.jpg" },
+{ name: "Image 178", url: "image/IMG-20250923-WA0178.jpg" },
+{ name: "Image 179", url: "image/IMG-20250923-WA0179.jpg" },
+{ name: "Image 180", url: "image/IMG-20250923-WA0180.jpg" },
+{ name: "Image 181", url: "image/IMG-20250923-WA0181.jpg" },
+{ name: "Image 182", url: "image/IMG-20250923-WA0182.jpg" },
+{ name: "Image 183", url: "image/IMG-20250923-WA0183.jpg" },
+{ name: "Image 184", url: "image/IMG-20250923-WA0184.jpg" },
+{ name: "Image 185", url: "image/IMG-20250923-WA0185.jpg" },
+{ name: "Image 186", url: "image/IMG-20250923-WA0186.jpg" },
+{ name: "Image 187", url: "image/IMG-20250923-WA0187.jpg" },
+{ name: "Image 188", url: "image/IMG-20250923-WA0188.jpg" },
+{ name: "Image 189", url: "image/IMG-20250923-WA0189.jpg" },
+{ name: "Image 190", url: "image/IMG-20250923-WA0190.jpg" },
+{ name: "Image 191", url: "image/IMG-20250923-WA0191.jpg" },
+{ name: "Image 192", url: "image/IMG-20250923-WA0192.jpg" },
+{ name: "Image 193", url: "image/IMG-20250923-WA0193.jpg" },
+{ name: "Image 194", url: "image/IMG-20250923-WA0194.jpg" },
+{ name: "Image 195", url: "image/IMG-20250923-WA0195.jpg" },
+{ name: "Image 196", url: "image/IMG-20250923-WA0196.jpg" },
+{ name: "Image 197", url: "image/IMG-20250923-WA0197.jpg" },
+{ name: "Image 198", url: "image/IMG-20250923-WA0198.jpg" },
+{ name: "Image 199", url: "image/IMG-20250923-WA0199.jpg" },
+{ name: "Image 200", url: "image/IMG-20250923-WA0200.jpg" },
+{ name: "Image 201", url: "image/IMG-20250923-WA0201.jpg" },
+{ name: "Image 202", url: "image/IMG-20250923-WA0202.jpg" },
+{ name: "Image 203", url: "image/IMG-20250923-WA0203.jpg" },
+{ name: "Image 204", url: "image/IMG-20250923-WA0204.jpg" },
+{ name: "Image 205", url: "image/IMG-20250923-WA0205.jpg" },
+{ name: "Image 206", url: "image/IMG-20250923-WA0206.jpg" },
+{ name: "Image 207", url: "image/IMG-20250923-WA0207.jpg" },
+{ name: "Image 208", url: "image/IMG-20250923-WA0208.jpg" },
+{ name: "Image 209", url: "image/IMG-20250923-WA0209.jpg" },
+{ name: "Image 210", url: "image/IMG-20250923-WA0210.jpg" },
+{ name: "Image 211", url: "image/IMG-20250923-WA0211.jpg" },
+{ name: "Image 212", url: "image/IMG-20250923-WA0212.jpg" },
+{ name: "Image 213", url: "image/IMG-20250923-WA0213.jpg" },
+{ name: "Image 214", url: "image/IMG-20250923-WA0214.jpg" },
+{ name: "Image 215", url: "image/IMG-20250923-WA0215.jpg" },
+{ name: "Image 216", url: "image/IMG-20250923-WA0216.jpg" },
+{ name: "Image 217", url: "image/IMG-20250923-WA0217.jpg" },
+{ name: "Image 218", url: "image/IMG-20250923-WA0218.jpg" },
+{ name: "Image 219", url: "image/IMG-20250923-WA0219.jpg" },
+{ name: "Image 220", url: "image/IMG-20250923-WA0220.jpg" },
+{ name: "Image 221", url: "image/IMG-20250923-WA0221.jpg" },
+{ name: "Image 222", url: "image/IMG-20250923-WA0222.jpg" },
+{ name: "Image 223", url: "image/IMG-20250923-WA0223.jpg" },
+{ name: "Image 224", url: "image/IMG-20250923-WA0224.jpg" },
+{ name: "Image 225", url: "image/IMG-20250923-WA0225.jpg" },
+{ name: "Image 226", url: "image/IMG-20250923-WA0226.jpg" },
+{ name: "Image 227", url: "image/IMG-20250923-WA0227.jpg" },
+{ name: "Image 228", url: "image/IMG-20250923-WA0228.jpg" },
+{ name: "Image 229", url: "image/IMG-20250923-WA0229.jpg" },
+{ name: "Image 230", url: "image/IMG-20250923-WA0230.jpg" },
+{ name: "Image 231", url: "image/IMG-20250923-WA0231.jpg" },
+{ name: "Image 232", url: "image/IMG-20250923-WA0232.jpg" },
+{ name: "Image 233", url: "image/IMG-20250923-WA0233.jpg" },
+{ name: "Image 234", url: "image/IMG-20250923-WA0234.jpg" },
+{ name: "Image 235", url: "image/IMG-20250923-WA0235.jpg" },
+{ name: "Image 236", url: "image/IMG-20250923-WA0236.jpg" },
+{ name: "Image 237", url: "image/IMG-20250923-WA0237.jpg" },
+{ name: "Image 238", url: "image/IMG-20250923-WA0238.jpg" },
+{ name: "Image 239", url: "image/IMG-20250923-WA0239.jpg" },
+{ name: "Image 240", url: "image/IMG-20250923-WA0240.jpg" },
+{ name: "Image 241", url: "image/IMG-20250923-WA0241.jpg" },
+{ name: "Image 242", url: "image/IMG-20250923-WA0242.jpg" },
+] ;
+    // Load album from LocalStorage or use default
+    let person = {
+      person_Name: "jaivy roy",
+      certy: "love journey",
+      list: JSON.parse(localStorage.getItem('album')) || defaultImages
+    };
+
+    const albumGrid = document.getElementById('albumGrid');
+    const personNameEl = document.getElementById('personName');
+    const personCertEl = document.getElementById('personCert');
+    const avatarEl = document.getElementById('avatar');
+    const countEl = document.getElementById('count');
+    const uploadInput = document.getElementById('uploadInput');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMeta = document.getElementById('modalMeta');
+    const closeModal = document.getElementById('closeModal');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    function initials(name){
+      if(!name) return "P";
+      return name.split(" ").map(s=>s[0]||"").slice(0,2).join("").toUpperCase();
+    }
+
+    function renderPerson(){
+      personNameEl.textContent = person.person_Name;
+      personCertEl.textContent = person.certy || "—";
+      avatarEl.textContent = initials(person.person_Name);
+      countEl.textContent = person.list.length + " items";
+    }
+
+    let currentIndex = 0;
+
+    function renderAlbum(list){
+      albumGrid.innerHTML = "";
+      if(!list || list.length === 0){
+        albumGrid.innerHTML = "<div style='opacity:.7;color:var(--muted)'>No items in album.</div>";
+        return;
+      }
+      list.forEach((item, idx)=>{
+        const card = document.createElement('button');
+        card.className='thumb';
+        card.setAttribute('aria-label', item.name || `Image ${idx+1}`);
+        card.setAttribute('data-index', idx);
+
+        const img = document.createElement('img');
+        img.src = item.url;
+        img.alt = item.name || `Photo ${idx+1}`;
+
+        const caption = document.createElement('div');
+        caption.className='caption';
+        const nameSpan = document.createElement('div');
+        nameSpan.className='name';
+        nameSpan.textContent=item.name || `Photo ${idx+1}`;
+        const idxSpan = document.createElement('div');
+        idxSpan.style.fontSize='12px';
+        idxSpan.style.color='var(--muted)';
+        idxSpan.textContent=(idx+1)+'/'+list.length;
+
+        caption.appendChild(nameSpan);
+        caption.appendChild(idxSpan);
+        card.appendChild(img);
+        card.appendChild(caption);
+
+        card.addEventListener('click',()=>openModal(idx));
+        albumGrid.appendChild(card);
+      });
+    }
+
+    function openModal(index){
+      currentIndex=index;
+      const item=person.list[index];
+      modalImage.src=item.url;
+      modalImage.alt=item.name;
+      modalTitle.textContent=item.name;
+      modalMeta.textContent=`By: ${person.person_Name} • Item ${index+1} of ${person.list.length}`;
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+    }
+
+    function closeModalFn(){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+    }
+
+    function showPrev(){
+      currentIndex=(currentIndex-1+person.list.length)%person.list.length;
+      openModal(currentIndex);
+    }
+
+    function showNext(){
+      currentIndex=(currentIndex+1)%person.list.length;
+      openModal(currentIndex);
+    }
+
+    function downloadCurrent(){
+      const link=document.createElement('a');
+      link.href=person.list[currentIndex].url;
+      link.download=(person.list[currentIndex].name||`photo-${currentIndex+1}`).replace(/\s+/g,'-').toLowerCase()+".jpg";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+
+    uploadInput.addEventListener('change',(e)=>{
+      const files=e.target.files;
+      Array.from(files).forEach(file=>{
+        const reader=new FileReader();
+        reader.onload=(ev)=>{
+          const newImg={name:file.name,url:ev.target.result};
+          person.list.push(newImg);
+          localStorage.setItem('album',JSON.stringify(person.list));
+          renderAlbum(person.list);
+          renderPerson();
+        };
+        reader.readAsDataURL(file);
+      });
+      uploadInput.value='';
+    });
+
+    resetBtn.addEventListener('click', () => {
+      person.list = [...defaultImages];
+      localStorage.setItem('album', JSON.stringify(person.list));
+      renderAlbum(person.list);
+      renderPerson();
+    });
+
+    window.addEventListener('keydown',(e)=>{
+      if(modal.classList.contains('show')){
+        if(e.key==='Escape') closeModalFn();
+        if(e.key==='ArrowLeft') showPrev();
+        if(e.key==='ArrowRight') showNext();
+      }
+    });
+
+    modal.addEventListener('click',(e)=>{
+      if(e.target===modal) closeModalFn();
+    });
+
+    closeModal.addEventListener('click',closeModalFn);
+    prevBtn.addEventListener('click',showPrev);
+    nextBtn.addEventListener('click',showNext);
+    downloadBtn.addEventListener('click',downloadCurrent);
+
+    renderPerson();
+    renderAlbum(person.list);
+  </script>
+</body>
+</html>
+<!--
+  Made with ❤️ by Jaivy Roy
+  https://jaivyroy.com

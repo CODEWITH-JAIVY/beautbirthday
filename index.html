@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy birthday meri jann </title>
+  <style>
+    :root{
+      --bg1:#0b0b14; --bg2:#281028; --accent:#ff4d6d; --gold:#ffd166;
+      --glass: rgba(255,255,255,0.06);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, Poppins, system-ui; color:#fff; background:linear-gradient(120deg,var(--bg1),var(--bg2)); overflow-x:hidden;}
+    .wrap{max-width:1200px;margin:0 auto;padding:40px}
+    /* HERO */
+    .hero{display:grid; grid-template-columns:1fr 420px; gap:28px; align-items:center; min-height:78vh}
+    @media (max-width:920px){ .hero{grid-template-columns:1fr; text-align:center; padding-bottom:10vh} .hero-right{order:-1} }
+
+    .card{background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:16px;padding:24px; box-shadow:0 10px 40px rgba(0,0,0,0.6); border:1px solid var(--glass)}
+    h1{font-size:3.2rem; margin:0 0 8px; letter-spacing:0.3px; text-shadow: 0 6px 30px rgba(255,77,109,0.12); animation: glow 2.2s infinite alternate}
+    @keyframes glow{from{text-shadow:0 0 12px #fff} to{text-shadow:0 0 36px #ff4d6d}}
+    p.lead{color:#d7d7d7; margin:0 0 18px}
+
+    .hero-img{border-radius:14px; overflow:hidden; height:320px; box-shadow:0 20px 60px rgba(0,0,0,0.6)}
+    .hero-img img{width:100%;height:100%;object-fit:cover;display:block; transform:scale(1.02); transition:transform .9s ease; filter: saturate(1.05) contrast(1.02)}
+    .hero-img:hover img{transform:scale(1.07) rotate(-0.5deg);}
+
+    /* timeline */
+    .timeline{display:flex; gap:14px; margin-top:18px; align-items:stretch; flex-wrap:wrap}
+    .step{flex:1 1 180px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:18px; border-radius:12px; cursor:pointer; position:relative; overflow:hidden; transition:transform .35s, box-shadow .35s}
+    .step:hover{transform:translateY(-8px); box-shadow:0 20px 40px rgba(0,0,0,0.5)}
+    .step .ico{font-size:28px}
+    .step h3{margin:8px 0 6px; font-size:1.05rem}
+    .step small{color:#d7d7d7}
+
+    /* floating particle hearts */
+    .particles{position:fixed; inset:0; pointer-events:none; z-index:1}
+
+    /* countdown */
+    .count{font-size:1.6rem;color:var(--gold); margin-top:8px}
+
+    /* controls */
+    .controls{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
+    .btn{background:var(--accent); border:none; color:#fff; padding:12px 18px; border-radius:999px; cursor:pointer; font-weight:600; box-shadow:0 10px 30px rgba(255,77,109,0.12); transition:transform .18s}
+    .btn:hover{transform:translateY(-4px)}
+    .btn.secondary{background:transparent; border:1px solid rgba(255,255,255,0.08)}
+
+    /* lightbox */
+    .lightbox{display:none; position:fixed; inset:0; z-index:9999; background:rgba(3,6,23,0.9); align-items:center; justify-content:center}
+    .lightbox img{max-width:92%;max-height:86%; border-radius:10px; box-shadow:0 30px 80px rgba(0,0,0,0.6)}
+    .close{position:absolute; top:20px; right:26px; font-size:34px; color:#fff; cursor:pointer}
+
+    footer{text-align:center;color:#cfcfcf;margin-top:28px; font-size:14px; padding-bottom:40px}
+
+    /* small responsive */
+    @media (max-width:520px){
+      h1{font-size:2.2rem}
+      .hero-img{height:240px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <section class="hero card">
+      <div>
+        <h1>Happy birthday my love <span style="color:var(--gold)">28 Sep</span></h1>
+        <p class="lead">Happy birthday beauty god bless you </p>
+<div class="timeline" aria-label="timeline">
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty1.jpg')">
+    <div class="ico">🥰</div>
+    <h3>Our First Date</h3>
+    <small>Butterflies & smiles</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty2.jpg')">
+    <div class="ico">💫</div>
+    <h3>Memorable Evening</h3>
+    <small>Under the stars</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty3.jpg')">
+    <div class="ico">💌</div>
+    <h3>Sweet Moments</h3>
+    <small>Forever in heart</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty4.jpg')">
+    <div class="ico">💍</div>
+    <h3>Beautiful Together</h3>
+    <small>Hand in hand</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty5.jpg')">
+    <div class="ico">🌸</div>
+    <h3>Special Day</h3>
+    <small>Blooming love</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty6.jpg')">
+    <div class="ico">🎉</div>
+    <h3>Celebrations</h3>
+    <small>Smiles everywhere</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty7.jpg')">
+    <div class="ico">💖</div>
+    <h3>Together Always</h3>
+    <small>Our promise</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty8.jpg')">
+    <div class="ico">🌍</div>
+    <h3>Trips & Travels</h3>
+    <small>World is ours</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty9.jpg')">
+    <div class="ico">✨</div>
+    <h3>Magical Times</h3>
+    <small>Pure happiness</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty10.jpg')">
+    <div class="ico">🕊️</div>
+    <h3>Peaceful Moments</h3>
+    <small>Calm & love</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty11.jpg')">
+    <div class="ico">🔥</div>
+    <h3>Our Spark</h3>
+    <small>Forever glowing</small>
+  </div>
+
+  <div class="step" onclick="openLight('image/beautyjaivy/jaivybeauty12.jpg')">
+    <div class="ico">💎</div>
+    <h3>Forever Us</h3>
+    <small>Unbreakable bond</small>
+  </div>
+
+</div>
+
+
+        <div class="controls">
+          <button class="btn" id="open3d">🚀Gallery</button>
+          <button class="btn secondary" id="surprise">🎁 Surprise</button>
+          <button class="btn" id="playPause">🎵 Play Music</button>
+        </div>
+
+        <div style="margin-top:14px">
+          <div>Countdown to 28 Sep:</div>
+          <div class="count" id="countdown">—</div>
+        </div>
+      </div>
+
+      <aside class="hero-right">
+        <div class="hero-img">
+          <img src="image/beautymain.jpg" alt="beauty& me ">
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      Made with ❤️ — Show this on her phone for a surprise.
+    </footer>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+    <span class="close" onclick="closeLight()">&times;</span>
+    <img id="lightbox-img" src="" alt="Memory photo">
+  </div>
+
+  <audio id="bg" loop src="music.mp3"></audio>
+
+  <script>
+    /* Particles: floating hearts */
+    const particlesRoot = document.getElementById('particles');
+    function spawnHeart(){
+      const el = document.createElement('div');
+      el.textContent = '❤️';
+      el.style.position = 'fixed';
+      el.style.left = Math.random()*100 + 'vw';
+      el.style.top = (90 + Math.random()*10) + 'vh';
+      el.style.fontSize = (12 + Math.random()*30) + 'px';
+      el.style.opacity = Math.random() * 0.9;
+      el.style.transform = `translateY(0)`;
+      el.style.transition = `transform ${6+Math.random()*6}s linear, opacity 6s linear`;
+      particlesRoot.appendChild(el);
+      requestAnimationFrame(()=> {
+        el.style.transform = `translateY(-120vh) rotate(${Math.random()*720}deg)`;
+        el.style.opacity = 0;
+      });
+      setTimeout(()=> el.remove(), 13000);
+    }
+    setInterval(spawnHeart, 350);
+
+    /* Lightbox functions */
+    function openLight(src){
+      const img = document.getElementById('lightbox-img');
+      img.src = src;
+      document.getElementById('lightbox').style.display = 'flex';
+      document.getElementById('lightbox').setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLight(){
+      document.getElementById('lightbox').style.display = 'none';
+      document.getElementById('lightbox').setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('lightbox').addEventListener('click', e=>{ if(e.target.id === 'lightbox') closeLight(); });
+
+ /* Countdown */
+const cdEl = document.getElementById('countdown');
+function updateCountdown(){
+  const now = new Date();
+  let year = now.getFullYear();
+  const target = new Date(`${year}-09-28T00:00:00`); // 👈 अब 28 Sep
+  if(target - now < 0) target.setFullYear(year+1);
+  const diff = target - now;
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const s = Math.floor((diff % (1000*60)) / 1000);
+  cdEl.textContent = `${d}d ${h}h ${m}m ${s}s`;
+}
+setInterval(updateCountdown, 1000); updateCountdown();
+
+
+    /* Surprise confetti + message */
+    document.getElementById('surprise').addEventListener('click', ()=>{
+      for(let i=0;i<80;i++){
+        const e = document.createElement('div');
+        e.textContent = ['✨','🎉','💖'][Math.floor(Math.random()*3)];
+        e.style.position='fixed';
+        e.style.left = (5 + Math.random()*90) + '%';
+        e.style.top = (10 + Math.random()*70) + '%';
+        e.style.fontSize = (8 + Math.random()*36) + 'px';
+        e.style.pointerEvents = 'none';
+        e.style.transition = 'transform 2.2s ease, opacity 2.2s linear';
+        document.body.appendChild(e);
+        requestAnimationFrame(()=> e.style.transform = `translateY(${120 + Math.random()*200}px) rotate(${Math.random()*720}deg)`);
+        setTimeout(()=> e.remove(), 2500);
+      }
+      alert('I promise to love you more every day 💞 — You are my forever.');
+    });
+
+    /* Music play/pause */
+    const audio = document.getElementById('bg');
+    document.getElementById('playPause').addEventListener('click', ()=>{
+      if(audio.paused){ audio.play().catch(()=> alert('Tap to allow audio play in some browsers.')); this.textContent='⏸ Pause Music'; }
+      else { audio.pause(); this.textContent='🎵 Play Music'; }
+    });
+
+    /* Open 3D gallery in a new window/tab */
+    document.getElementById('open3d').addEventListener('click', ()=>{
+      window.open('gallery3d.html', '_blank');
+    });
+  </script>
+</body>
+</html>
