@@ -66,7 +66,7 @@
   <main class="wrap" role="main">
     <section class="hero card">
       <div>
-        <h1>Happy birthday my love <span style="color:var(--gold)">28 Sep</span></h1>
+        <h1>Happy birthday my love <span style="color:var(--gold)">27 Sep</span></h1>
         <p class="lead">Happy birthday beauty god bless you </p>
 <div class="timeline" aria-label="timeline">
 
@@ -152,7 +152,7 @@
         </div>
 
         <div style="margin-top:14px">
-          <div>Countdown to 28 Sep:</div>
+          <div>Countdown to 27 Sep:</div>
           <div class="count" id="countdown">—</div>
         </div>
       </div>
@@ -214,22 +214,21 @@
     }
     document.getElementById('lightbox').addEventListener('click', e=>{ if(e.target.id === 'lightbox') closeLight(); });
 
- /* Countdown */
-const cdEl = document.getElementById('countdown');
-function updateCountdown(){
-  const now = new Date();
-  let year = now.getFullYear();
-  const target = new Date(`${year}-09-28T00:00:00`); // 👈 अब 28 Sep
-  if(target - now < 0) target.setFullYear(year+1);
-  const diff = target - now;
-  const d = Math.floor(diff / (1000*60*60*24));
-  const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-  const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-  const s = Math.floor((diff % (1000*60)) / 1000);
-  cdEl.textContent = `${d}d ${h}h ${m}m ${s}s`;
-}
-setInterval(updateCountdown, 1000); updateCountdown();
-
+    /* Countdown */
+    const cdEl = document.getElementById('countdown');
+    function updateCountdown(){
+      const now = new Date();
+      let year = now.getFullYear();
+      const target = new Date(`${year}-09-27T00:00:00`); // 👈 now 27 Sep
+      if(target - now < 0) target.setFullYear(year+1);
+      const diff = target - now;
+      const d = Math.floor(diff / (1000*60*60*24));
+      const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+      const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+      const s = Math.floor((diff % (1000*60)) / 1000);
+      cdEl.textContent = `${d}d ${h}h ${m}m ${s}s`;
+    }
+    setInterval(updateCountdown, 1000); updateCountdown();
 
     /* Surprise confetti + message */
     document.getElementById('surprise').addEventListener('click', ()=>{
@@ -251,9 +250,15 @@ setInterval(updateCountdown, 1000); updateCountdown();
 
     /* Music play/pause */
     const audio = document.getElementById('bg');
-    document.getElementById('playPause').addEventListener('click', ()=>{
-      if(audio.paused){ audio.play().catch(()=> alert('Tap to allow audio play in some browsers.')); this.textContent='⏸ Pause Music'; }
-      else { audio.pause(); this.textContent='🎵 Play Music'; }
+    document.getElementById('playPause').addEventListener('click', function(){
+      if(audio.paused){ 
+        audio.play().catch(()=> alert('Tap to allow audio play in some browsers.')); 
+        this.textContent='⏸ Pause Music'; 
+      }
+      else { 
+        audio.pause(); 
+        this.textContent='🎵 Play Music'; 
+      }
     });
 
     /* Open 3D gallery in a new window/tab */
